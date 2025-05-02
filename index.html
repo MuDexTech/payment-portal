@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mue De XTech Payments</title>
+    <script src="https://www.paypal.com/sdk/js?client-id=AbXT988ZX18jqVlf62_OrlkomQ4y0zgnv5n_LoyS3&currency=USD"></script>
+    <style>
+        /* Professional CSS */
+        body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
+        .payment-section { margin: 2rem 0; }
+        .paypal-button { margin: 1rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mue De XTech Payment Portal</h1>
+        
+        <div class="payment-section">
+            <h2>One-Time Payment</h2>
+            <div id="paypal-button-container" class="paypal-button"></div>
+        </div>
+
+        <div class="payment-section">
+            <h2>Subscription</h2>
+            <div id="paypal-subscription-container" class="paypal-button"></div>
+        </div>
+    </div>
+
+    <script>
+        // Payment Integration
+        paypal.Buttons({
+            style: {
+                color: 'gold',
+                shape: 'rect',
+                label: 'paypal'
+            },
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '100.00' // Update amount here
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert('Payment completed by ' + details.payer.name.given_name);
+                });
+            }
+        }).render('#paypal-button-container');
+
+        // Subscription Integration
+        paypal.Buttons({
+            style: {
+                color: 'blue',
+                shape: 'pill',
+                label: 'subscribe'
+            },
+            createSubscription: function(data, actions) {
+                return actions.subscription.create({
+                    plan_id: 'P-XXXXXXXX' // Replace with actual plan ID
+                });
+            },
+            onApprove: function(data) {
+                alert('Subscription ID: ' + data.subscriptionID);
+            }
+        }).render('#paypal-subscription-container');
+    </script>
+</body>
+              </html>
